@@ -99,10 +99,14 @@ header {
 
   .nav > li > a {
       padding: 50px 15px;
+      color: $flat-orange;
   }
 
   .active {
-    background: $flat-orange;
+    a {
+      color: $flat-blue!important;
+      background: $flat-orange!important;
+    }
   }
 
   /* Make the masthead heading the same height as the navigation */
@@ -117,7 +121,7 @@ header {
 .page-wrap {
   height: 100%;
   position: relative;
-  transform: translate3d(0px, 0px, 0px);
+  transform: translateY(0px);
   transition: all 700ms ease 0s;  
 }
 
