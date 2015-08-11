@@ -1,8 +1,24 @@
 $icon-font-path: "../bower_components/bootstrap-sass/assets/fonts/bootstrap/";
 
+$menu-offset: 240px;
+
+// flat pallete
+$flat-blue: #2C82C9;
+$flat-green: #2CC990;
+$flat-yellow: #EEE657;
+$flat-orange: #FCB941;
+$flat-red: #FC6042;
+// end flat pallete
+
 // bower:scss
 @import "bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 // endbower
+
+//extenders
+.transitionAll {
+  transition: all 0.2s ease-in-out 0s;
+}
+//end extenders
 
 .browsehappy {
   margin: 0.2em 0;
@@ -10,24 +26,84 @@ $icon-font-path: "../bower_components/bootstrap-sass/assets/fonts/bootstrap/";
   padding: 0.2em 0;
 }
 
+html {
+  overflow: hidden;
+}
+
+ul, li {
+  list-style: none;
+}
+
 /* Space out content a bit */
 body {
-  padding-top: 20px;
-  padding-bottom: 20px;
   font-family: Oswald;
+  font-weight: 300;
+  font-size: 35px;
+}
+
+.section-nav {
+  position: fixed;
+  z-index: 100;
+  top: 50%;
+  right: 32px;
+
+  li {
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin: 16px;
+    position: relative;  
+  }
+
+  span {
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    display: block;
+    border-radius: 50%;
+    background: #000;
+    height: 10px;
+    width: 10px;
+    margin: -5px 0px 0px -5px;
+    @extend .transitionAll;
+  }
+
+  span:hover { 
+    @extend .point-active;   
+  }
+
+  span.point-active {
+    height: 16px;
+    width: 16px;
+    margin: -8px 0px 0px -8px;     
+  }
+
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
-.header,
-.marketing,
-.footer {
+header,
+footer {
   padding-left: 15px;
   padding-right: 15px;
 }
 
 /* Custom page header */
-.header {
-  border-bottom: 1px solid #e5e5e5;
+header {
+  position: fixed;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: $flat-blue;
+  z-index: 11;
+  box-sizing: border-box;
+
+  .nav > li > a {
+      padding: 50px 15px;
+  }
+
+  .active {
+    background: $flat-orange;
+  }
 
   /* Make the masthead heading the same height as the navigation */
   h3 {
@@ -36,6 +112,13 @@ body {
     line-height: 40px;
     padding-bottom: 19px;
   }
+}
+
+.page-wrap {
+  height: 100%;
+  position: relative;
+  transform: translate3d(0px, 0px, 0px);
+  transition: all 700ms ease 0s;  
 }
 
 .social {
@@ -47,7 +130,7 @@ body {
 }
 
 /* Custom page footer */
-.footer {
+footer {
   padding-top: 19px;
   color: #777;
   border-top: 1px solid #e5e5e5;
@@ -72,7 +155,7 @@ body {
 
     b {
       font-weight: 300;
-      color: #337AB7;
+      color: $flat-blue;
     }
 
     .first-line {
@@ -92,7 +175,6 @@ body {
 
 /* Supporting marketing content */
 .marketing {
-  margin: 40px 0;
   p + h4 {
     margin-top: 28px;
   }
@@ -100,15 +182,23 @@ body {
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
+  header {
+    width: $menu-offset;
+  }
+
+  main {
+    padding-left: $menu-offset;
+  }
+
   .container {
     min-width: 730px;
     max-width: 1280px;
   }
 
   /* Remove the padding we set earlier */
-  .header,
+  header,
   .marketing,
-  .footer {
+  footer {
     padding-left: 0;
     padding-right: 0;
   }
