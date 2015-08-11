@@ -30,6 +30,10 @@ html {
   overflow: hidden;
 }
 
+main {
+  background-color: $flat-blue;
+}
+
 section {
   overflow: hidden;
 }
@@ -43,6 +47,17 @@ body {
   font-family: Oswald;
   font-weight: 300;
   font-size: 35px;
+  color: #fff;
+}
+
+a:hover,
+a:active,
+a:focus {
+  color: $flat-yellow;
+}
+
+a {
+  color: $flat-orange;
 }
 
 .section-nav {
@@ -65,7 +80,7 @@ body {
     right: 50%;
     display: block;
     border-radius: 50%;
-    background: #000;
+    background: $flat-orange;
     height: 10px;
     width: 10px;
     margin: -5px 0px 0px -5px;
@@ -100,6 +115,13 @@ header {
   background: $flat-blue;
   z-index: 11;
   box-sizing: border-box;
+
+  .nav {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%; 
+  }
 
   .nav > li > a {
       padding: 50px 15px;
@@ -158,10 +180,11 @@ footer {
     font-size: 86px;
     line-height: 1.5;
     letter-spacing: -1.5px;
+    color: #fff;
 
     b {
       font-weight: 300;
-      color: $flat-blue;
+      color: $flat-orange;
     }
 
     .first-line {

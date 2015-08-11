@@ -5,9 +5,10 @@ $(document).ready(function () {
 	var translateY = 0;
 	var pageWrapHeight = null;
 	var sectionNavHeight = null;
-	
+
 	resetHash();
 	updateHeights();
+	drawHeaderCanvas();
 
 	/**
 	*  Update heights variables on orientation change on mobile devices 
@@ -90,7 +91,24 @@ $(document).ready(function () {
 		event.preventDefault();
 		var target = $(this);
 		onNavAnchorClick(target);
-	});	
+	});
+
+
+	function drawHeaderCanvas() {
+	  var headerCanvas = document.getElementById('header-canvas');
+	  if (headerCanvas.getContext) {
+	    var ctx = headerCanvas.getContext('2d');
+	    headerCanvas.height = windowHeight;
+	   
+	    var triangle = new Path2D();
+	    triangle.moveTo(0, 300);
+	    triangle.lineTo(240, 0);
+	    triangle.lineTo(0, windowHeight);
+	    
+	    ctx.fillStyle = "#2475c0";
+	    ctx.fill(triangle);
+	  }
+	}
 
 	/**
 	*  Sets a browser's window height value for each section
@@ -114,7 +132,7 @@ $(document).ready(function () {
 		windowHeight = $(window).height();
 		setWindowHeight();
 		pageWrapHeight = $(".page-wrap").height();
-		setSectionNavMargin();	
+		setSectionNavMargin();
 	}
 
 	function onHashChange() {
