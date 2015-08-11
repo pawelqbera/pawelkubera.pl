@@ -24,6 +24,31 @@ $(document).ready(function () {
 	}, false);
 
 	/**
+	*  Handles keydown events that allow site's navigation: arrow up/down,
+	*  page up/down, end and home
+	*/	
+	$(window).keydown(function(event) {	   	
+	   	var arr = [40,34,32,9];
+	   	if($.inArray(event.which, arr) !== -1) {
+			event.preventDefault();
+		   	if(translateY * -1 < (pageWrapHeight - windowHeight)){	    	 		
+		    	translateY -= windowHeight;
+		   		$('.current').next().addClass('current').prev().removeClass('current');
+		   	}
+	   	} else if (event.which === 38 || event.which === 33){
+	    	event.preventDefault();		
+	   		if (translateY < 0){
+	   			translateY += windowHeight;
+				$('.current').prev().addClass('current').next().removeClass('current');	   	
+	   		}
+	   	}
+	   	hash = $('.current').attr("data-anchor");
+		$(".page-wrap").css({transform: 'translateY(' + translateY + 'px)'});			
+		history.pushState(null, null, '#' + hash);		
+		return onHashChange();
+	});
+
+	/**
 	*  Handles the mousewheel event and scroll up/down the sections
 	*/
 	$(window).on('mousewheel', function(event) {	
@@ -54,14 +79,8 @@ $(document).ready(function () {
 	*/
 	$('.section-nav a').click(function(event){
 		event.preventDefault();
-		var targetSectionAnchor = $(this).attr("href").replace('#','');
-		var index = $('#' + targetSectionAnchor).index();
-		translateY = index * windowHeight * -1;
-		$(".page-wrap").css({transform: 'translateY(' + translateY + 'px)'});
-		$('.current').removeClass('current');
-		$('#' + targetSectionAnchor).addClass('current');
-		history.pushState(null, null, '#' + targetSectionAnchor);
-		return onHashChange();
+		var target = $(this);		
+		onNavAnchorClick(target);
 	});
 
 	/**
@@ -69,14 +88,8 @@ $(document).ready(function () {
 	*/
 	$('.nav a').click(function(event){
 		event.preventDefault();
-		var targetSectionAnchor = $(this).attr("href").replace('#','');
-		var index = $('#' + targetSectionAnchor).index();
-		translateY = index * windowHeight * -1;
-		$(".page-wrap").css({transform: 'translateY(' + translateY + 'px)'});
-		$('.current').removeClass('current');
-		$('#' + targetSectionAnchor).addClass('current');
-		history.pushState(null, null, '#' + targetSectionAnchor);
-		return onHashChange();
+		var target = $(this);
+		onNavAnchorClick(target);
 	});	
 
 	/**
@@ -114,6 +127,17 @@ $(document).ready(function () {
 	function resetHash() {
 		window.location.href = "#home";
 		history.pushState(null, null, window.location.pathname);
+	}
+
+	function onNavAnchorClick(target) {
+		var targetSectionAnchor = $(target).attr("href").replace('#','');
+		var index = $('#' + targetSectionAnchor).index();
+		translateY = index * windowHeight * -1;
+		$(".page-wrap").css({transform: 'translateY(' + translateY + 'px)'});
+		$('.current').removeClass('current');
+		$('#' + targetSectionAnchor).addClass('current');
+		history.pushState(null, null, '#' + targetSectionAnchor);
+		return onHashChange();		
 	}
 
 });

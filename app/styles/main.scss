@@ -30,6 +30,10 @@ html {
   overflow: hidden;
 }
 
+section {
+  overflow: hidden;
+}
+
 ul, li {
   list-style: none;
 }
@@ -103,9 +107,9 @@ header {
   }
 
   .active {
+    background: $flat-orange!important;
     a {
       color: $flat-blue!important;
-      background: $flat-orange!important;
     }
   }
 
@@ -147,11 +151,9 @@ footer {
 /* Main marketing message and sign up button */
 .jumbotron {
   text-align: center;
-  border-bottom: 1px solid #e5e5e5;
-  background: #fff;
-  
+
   h1 {
-    text-align: left;
+    text-align: center;
     font-weight: 300;
     font-size: 86px;
     line-height: 1.5;
@@ -212,8 +214,4 @@ footer {
     margin-bottom: 30px;
   }
 
-  /* Remove the bottom border on the jumbotron for visual effect */
-  .jumbotron {
-    border-bottom: 0;
-  }
 }
