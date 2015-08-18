@@ -95,7 +95,7 @@ $(document).ready(function () {
 
 
 	function drawHeaderCanvas() {
-	  var headerCanvas = document.getElementById('header-canvas');
+/*	  var headerCanvas = document.getElementById('header-canvas');
 	  if (headerCanvas.getContext) {
 	    var ctx = headerCanvas.getContext('2d');
 	    headerCanvas.height = windowHeight;
@@ -105,9 +105,9 @@ $(document).ready(function () {
 	    triangle.lineTo(240, 0);
 	    triangle.lineTo(0, windowHeight);
 	    
-	    ctx.fillStyle = "#2475c0";
+	    ctx.fillStyle = "#16A086";
 	    ctx.fill(triangle);
-	  }
+	  }*/
 	}
 
 	/**
@@ -140,6 +140,7 @@ $(document).ready(function () {
 		$('.nav a[href="' + window.location.hash + '"]').parents('li').addClass('active');
 		$('.section-nav a').children('span').removeClass('point-active');
 		$('.section-nav a[href="' + window.location.hash + '"]').children('span').addClass('point-active');
+		$('body').removeClass().addClass((window.location.hash).replace('#',''));
 	}
 
 	function resetHash() {

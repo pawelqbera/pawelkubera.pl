@@ -18,6 +18,8 @@ module.exports = function (grunt) {
       useminPrepare: 'grunt-usemin'
   });
 
+  grunt.loadNpmTasks('grunt-ssh-deploy');
+
   // Configurable paths
   var config = {
     app: 'app',
@@ -386,6 +388,21 @@ module.exports = function (grunt) {
         'imagemin',
         'svgmin'
       ]
+    },
+
+    secret: grunt.file.readJSON('secret.json'),
+    environments: {
+      production: {
+        options: {        
+          host: '<%= secret.production.host %>',
+          username: '<%= secret.production.username %>',
+          password: '<%= secret.production.password %>',
+          local_path: 'dist',
+          deploy_path: '/var/www/domains/pawelkubera.pl',
+          releases_to_keep: '5',
+          release_subdir: '/'
+        }
+      }
     }
   });
 

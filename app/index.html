@@ -40,20 +40,28 @@
     <!-- endbuild -->
     
   </head>
-  <body>
+  <body class="home">
     <!--[if lt IE 10]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     <header>
       <canvas id="header-canvas" width="240px" height="743px"></canvas>
-      <ul class="nav">
-        <li class="active"><a href="#home">Home</a></li>
-        <li><a href="#portfolio">Portfolio</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-      <h3 class="text-muted">Welcome to <a href="http://pawelkubera.pl">pawelkubera.pl</a></h3>
+      <nav>
+        <a class="logo" href="http://pawelkubera.pl"><img src="images/pawel-kubera-front-end-developer.png" alt="Pawel Kubera Front-end Developer" /></a>
+        <ul class="nav">
+          <li class="active"><a href="#home">Home</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
     </header>
+
+    <div class="menu-burger">
+      <span class="top"></span>
+      <span class="middle"></span>
+      <span class="bottom"></span>
+    </div>
     
     <div class="section-nav">
       <ul>
@@ -69,14 +77,14 @@
         <section id="home" class="current" data-anchor="home">
           <div class="jumbotron">
             <h1 class="cd-headline letters type">
-              <span class="first-line">Hi, my name is Pawel Kubera. I'm a </span>
+              <span class="first-line">Hi, my name is <span class="name">Pawel Kubera</span>. I'm an extra (<span class="name">!</span>terrestrial)</span>
               <span class="cd-words-wrapper waiting">
                 <b class="is-visible">front-end developer</b>
                 <b>UI/UX designer</b>
               </span>
               <span>based in Poland.</span>
             </h1>
-            <p><a class="btn btn-lg btn-success" href="https://github.com/pawelqbera" target="_blank">Show me what you've GIT!<span class="social social-github"></span></a></p>
+            <img src="images/pawel-kubera-front-end-developer.svg" alt="Pawel Kubera Front-end Developer" />
           </div>
         </section>  
 
@@ -85,6 +93,7 @@
             <div class="col-lg-6">
               <h4>Portfolio</h4>
               <p>In 2012 I co-founded <a href="https://chatwee.com">Chatwee</a>. Now, I freelance.</p>
+              <p><a class="btn btn-lg btn-success" href="https://github.com/pawelqbera" target="_blank">Show me what you've GIT!<span class="social social-github"></span></a></p>
             </div>
           </div>
         </section>
