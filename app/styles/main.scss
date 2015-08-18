@@ -31,7 +31,7 @@ html {
 }
 
 main {
-  transition: background-color 1.5s ease-in-out;
+  transition: background-color 1.5s ease-in-out, color 1.5s ease-in-out;
 }
 
 .home main {
@@ -48,11 +48,13 @@ main {
 }
 
 .skills main {
-  background-color: #7CEBF6;
+  background-color: #A7B3D1;
+  color: #203040;
 }
 
 .contact main {
   background-color: #DDFFF7;
+  color: #203040;
 }
 
 section {
@@ -69,7 +71,7 @@ body {
   font-family: Oswald;
   font-weight: 300;
   font-size: 35px;
-  color: #0F6177;
+  color: #fff;
 }
 
 a:hover,
@@ -180,13 +182,14 @@ header {
 }
 
 .menu-burger {
-  position: relative;
-  top: 96px;
+  position: absolute;
+  top: 48px;
   left: 48px;
   z-index: 1;
   cursor: pointer;
   width: 60px;
   height: 48px;
+  display: block;
 
   span {
     border-top: 1px solid #1bbc9b;
@@ -276,8 +279,37 @@ footer {
   }
 
   img {
-    margin: 24px 0 0 0;    
+    margin: 24px 0 0 0;
+    @extend .transitionAll;
   }
+
+  .animated { 
+      -webkit-animation-duration: 1s; 
+      animation-duration: 1s; 
+      -webkit-animation-fill-mode: forwards; 
+      animation-fill-mode: forwards; 
+  } 
+
+  @-webkit-keyframes lightSpeedOut { 
+      0% { -webkit-transform: translateX(0%) translateY(0%) scale(1); } 
+      100% { -webkit-transform: translateX(-324%) translateY(-275%) scale(0.25);  } 
+  } 
+  @keyframes lightSpeedOut { 
+      0% { transform: translateX(0%) translateY(0%) scale(1); } 
+      100% { transform: translateX(-324%) translateY(-275%) scale(0.25); } 
+  } 
+  .lightSpeedOut { 
+      -webkit-animation-name: lightSpeedOut; 
+      animation-name: lightSpeedOut; 
+      -webkit-animation-timing-function: ease-in; 
+      animation-timing-function: ease-in; 
+  } 
+  .animated.lightSpeedOut { 
+      -webkit-animation-duration: 1s; 
+      animation-duration: 1s; 
+  }
+
+
 }
 
 /* Supporting marketing content */

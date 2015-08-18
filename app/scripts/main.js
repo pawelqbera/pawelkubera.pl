@@ -93,6 +93,16 @@ $(document).ready(function () {
 		onNavAnchorClick(target);
 	});
 
+	$('#menu-burger').click(function(event){
+		event.preventDefault();
+		bigLogoFly();
+		var target = $(this);
+		clearTimeout($.data(this, 'scrollTimer'));	
+		$.data(this, 'scrollTimer', setTimeout(function() {
+			onNavAnchorClick(target);
+		}, 1000));
+	});
+
 
 	function drawHeaderCanvas() {
 /*	  var headerCanvas = document.getElementById('header-canvas');
@@ -157,6 +167,10 @@ $(document).ready(function () {
 		$('#' + targetSectionAnchor).addClass('current');
 		history.pushState(null, null, '#' + targetSectionAnchor);
 		return onHashChange();		
+	}
+
+	function bigLogoFly() {
+		$('#big-logo').addClass('lightSpeedOut');
 	}
 
 });
