@@ -1,0 +1,352 @@
+$icon-font-path: "../bower_components/bootstrap-sass/assets/fonts/bootstrap/";
+
+$menu-offset: 240px;
+
+// flat pallete
+$flat-blue: #2C82C9;
+$flat-green: #2CC990;
+$flat-yellow: #EEE657;
+$flat-orange: #FCB941;
+$flat-red: #FC6042;
+// end flat pallete
+
+// bower:scss
+@import "bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+// endbower
+
+//extenders
+.transitionAll {
+  transition: all 0.2s ease-in-out 0s;
+}
+//end extenders
+
+.browsehappy {
+  margin: 0.2em 0;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+html {
+  overflow: hidden;
+}
+
+main {
+  transition: background-color 1.5s ease-in-out, color 1.5s ease-in-out;
+}
+
+.home main {
+  background-color: #203040;
+  padding-left: 0;
+}
+
+.home header {
+  background-color: #ECF0F1;
+}
+
+.portfolio main {
+  background-color: #48569E;
+}
+
+.skills main {
+  background-color: #A7B3D1;
+  color: #203040;
+}
+
+.contact main {
+  background-color: #DDFFF7;
+  color: #203040;
+}
+
+section {
+  overflow: hidden;
+  position: relative;
+}
+
+ul, li {
+  list-style: none;
+}
+
+/* Space out content a bit */
+body {
+  font-family: Oswald;
+  font-weight: 300;
+  font-size: 35px;
+  color: #fff;
+}
+
+a:hover,
+a:active,
+a:focus {
+  color: $flat-yellow;
+}
+
+a {
+  color: #0F6177;
+}
+
+.section-nav {
+  position: fixed;
+  z-index: 100;
+  top: 50%;
+  right: 32px;
+
+  li {
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin: 16px;
+    position: relative;  
+  }
+
+  span {
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    display: block;
+    border-radius: 50%;
+    background: $flat-orange;
+    height: 10px;
+    width: 10px;
+    margin: -5px 0px 0px -5px;
+    @extend .transitionAll;
+  }
+
+  span:hover { 
+    @extend .point-active;   
+  }
+
+  span.point-active {
+    height: 16px;
+    width: 16px;
+    margin: -8px 0px 0px -8px;     
+  }
+
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+header,
+footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Custom page header */
+.home header {
+  width: 0;
+}
+
+header {
+  position: fixed;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: #fff;
+  z-index: 11;
+  box-sizing: border-box;
+
+  nav {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%; 
+    
+    .logo {
+      display: inline-block;
+      padding: 42px 0px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .nav > li > a {
+        padding: 50px 15px;
+        color: $flat-orange;
+    }
+
+    .active {
+      background: #fff!important;
+      
+      a {
+        color: #0F6177!important;
+      }
+    }
+  
+  }
+
+  /* Make the masthead heading the same height as the navigation */
+  h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
+    padding-bottom: 19px;
+  }
+}
+
+.menu-burger {
+  position: absolute;
+  top: 48px;
+  left: 48px;
+  z-index: 1;
+  cursor: pointer;
+  width: 60px;
+  height: 48px;
+  display: block;
+
+  span {
+    border-top: 1px solid #1bbc9b;
+    position: absolute;
+    width: 60px;
+  }
+  
+  .top {
+    top: 0;
+  }
+
+  .middle {
+    top: 24px;
+  }
+
+  .bottom {
+    top: 48px;
+  }
+
+
+}
+
+.page-wrap {
+  height: 100%;
+  position: relative;
+  transform: translateY(0px);
+  transition: all 700ms ease 0s;  
+}
+
+.social {
+  list-style: none;
+
+  li {
+    float: left;
+  }
+}
+
+/* Custom page footer */
+footer {
+  padding-top: 19px;
+  color: #0F6177;
+  border-top: 1px solid #0F6177;
+}
+
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  margin: -15% 0 0 0;
+  width: 100%;
+
+  h1 {
+    text-align: center;
+    font-weight: 300;
+    font-size: 66px;
+    line-height: 1.5;
+    letter-spacing: -2.5px;
+    color: #1BBC9B;
+
+    b {
+      font-weight: 300;
+      color: $flat-orange;
+    }
+
+    .first-line {
+      display: block;
+
+      .name {
+        color: #0B8389;
+      }
+
+    }
+  }
+
+  p {
+    margin: 75px 0;
+  }
+
+  .btn {
+    font-size: 21px;
+    padding: 14px 24px;
+  }
+
+  img {
+    margin: 24px 0 0 0;
+    @extend .transitionAll;
+  }
+
+  .animated { 
+      -webkit-animation-duration: 1s; 
+      animation-duration: 1s; 
+      -webkit-animation-fill-mode: forwards; 
+      animation-fill-mode: forwards; 
+  } 
+
+  @-webkit-keyframes lightSpeedOut { 
+      0% { -webkit-transform: translateX(0%) translateY(0%) scale(1); } 
+      100% { -webkit-transform: translateX(-324%) translateY(-275%) scale(0.25);  } 
+  } 
+  @keyframes lightSpeedOut { 
+      0% { transform: translateX(0%) translateY(0%) scale(1); } 
+      100% { transform: translateX(-324%) translateY(-275%) scale(0.25); } 
+  } 
+  .lightSpeedOut { 
+      -webkit-animation-name: lightSpeedOut; 
+      animation-name: lightSpeedOut; 
+      -webkit-animation-timing-function: ease-in; 
+      animation-timing-function: ease-in; 
+  } 
+  .animated.lightSpeedOut { 
+      -webkit-animation-duration: 1s; 
+      animation-duration: 1s; 
+  }
+
+
+}
+
+/* Supporting marketing content */
+.marketing {
+  p + h4 {
+    margin-top: 28px;
+  }
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  header {
+    width: $menu-offset;
+    transition: width 0.5s ease-in-out;
+    overflow: hidden;
+  }
+
+  main {
+    padding-left: $menu-offset;
+  }
+
+  .container {
+    min-width: 730px;
+    max-width: 1280px;
+  }
+
+  /* Remove the padding we set earlier */
+  header,
+  .marketing,
+  footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Space out the masthead */
+  .header {
+    margin-bottom: 30px;
+  }
+
+}
