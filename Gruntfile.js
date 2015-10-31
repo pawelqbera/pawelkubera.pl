@@ -397,7 +397,7 @@ module.exports = function (grunt) {
           host: '<%= secret.production.host %>',
           username: '<%= secret.production.username %>',
           password: '<%= secret.production.password %>',
-          local_path: 'dist',
+          local_path: './dist',
           deploy_path: '/var/www/domains/pawelkubera.pl',
           releases_to_keep: '5',
           release_subdir: '/'

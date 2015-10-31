@@ -1,176 +1,273 @@
-$(document).ready(function () {
+;(function($) {
 	'use strict';
-	var hash = null;
-	var windowHeight = null;
-	var translateY = 0;
-	var pageWrapHeight = null;
-	var sectionNavHeight = null;
 
-	resetHash();
-	updateHeights();
-	drawHeaderCanvas();
+	var $document = $(document);
+	
+	var APP = function(){
+		this.$window = $(window);
+		this.$body = $(document.body);
+		this.$section = this.$body.find('section');
+		this.$pageWrap = this.$body.find('.page-wrap');
+		this.$sectionNav = this.$body.find('.section-nav');
+		this.$anchor = this.$body.find('.anchor');
+		this.$sectionNavAnchor = this.$body.find('.section-nav a');
+		this.$navAnchor = this.$body.find('.nav a');
+		this.$menuBurger = this.$body.find('.menu-burger');
+		this.$headerNav = this.$body.find('header nav');
 
-	/**
-	*  Update heights variables on orientation change on mobile devices 
-	*/
-	$(window).on('orientationchange', function() {
-		updateHeights();
-	}, false);
+		this.defaultHash = '#home';
+		this.translateY = 0;
+	};
 
-	/**
-	*  Update heights variables on browser's window size change
-	*/
-	$(window).on('resize', function() {
-		updateHeights();
-	}, false);
+	APP.prototype = {
 
-	/**
-	*  Handles keydown events that allow site's navigation: arrow up/down,
-	*  page up/down, end and home
-	*/	
-	$(window).keydown(function(event) {	   	
-	   	var arr = [40,34,32,9];
-	   	if($.inArray(event.which, arr) !== -1) {
-			event.preventDefault();
-		   	if(translateY * -1 < (pageWrapHeight - windowHeight)){	    	 		
-		    	translateY -= windowHeight;
-		   		$('.current').next().addClass('current').prev().removeClass('current');
-		   	}
-	   	} else if (event.which === 38 || event.which === 33){
-	    	event.preventDefault();		
-	   		if (translateY < 0){
-	   			translateY += windowHeight;
-				$('.current').prev().addClass('current').next().removeClass('current');	   	
-	   		}
-	   	}
-	   	hash = $('.current').attr("data-anchor");
-		$(".page-wrap").css({transform: 'translateY(' + translateY + 'px)'});			
-		history.pushState(null, null, '#' + hash);		
-		return onHashChange();
-	});
+		start: function() {			
+			this.updateHeights();
+			this.setHash();
+			this.bindEvents();
+		},
 
-	/**
-	*  Handles the mousewheel event and scroll up/down the sections
-	*/
-	$(window).on('mousewheel', function(event) {	
-		clearTimeout($.data(this, 'scrollTimer'));	
-		$.data(this, 'scrollTimer', setTimeout(function() {
-	   		if(event.deltaY < 0 && translateY * -1 < (pageWrapHeight - windowHeight)){
-	    		translateY -= windowHeight;
-	   			$('.current').next().addClass('current').prev().removeClass('current');
-	   		}else if (event.deltaY > 0 && translateY < 0){
-	   			translateY += windowHeight;
-				$('.current').prev().addClass('current').next().removeClass('current');
-	   		}
-	   		hash = $('.current').attr("data-anchor");
-			$(".page-wrap").css({transform: 'translateY(' + translateY + 'px)'});			
-			history.pushState(null, null, '#' + hash);		
-			return onHashChange();
-		}, 250));
-	});
+		bindEvents: function() {
+			var self = this;
+			
+			/**
+			*  Update heights variables on orientation change on mobile devices 
+			*/
+			this.$window.on('orientationchange', function() {
+				self.updateHeights();
+			}, false);
 
-	$(window).on('hashchange', function(event) {
-		if(window.location.hash !== "") {
-			onHashChange();
+			/**
+			*  Update heights variables on browser's window size change
+			*/
+			this.$window.on('resize', function() {
+				self.updateHeights();
+			}, false);
+
+			/**
+			*  Handles keydown events that allow site's navigation: arrow up/down,
+			*  page up/down, end and home
+			*/
+			this.$window.keydown(function(event) {
+				var upKeys = [40,34,32,9],
+					downKeys = [38,33],
+					homeEndKeys = [36,35],
+					$current = $('.current');
+				
+				if($.inArray(event.which, upKeys.concat(downKeys, homeEndKeys)) !== -1) {
+					event.preventDefault();
+					self.headerNavMobileHide();
+				} else {
+					return true;
+				}
+
+				if($.inArray(event.which, upKeys) !== -1 && self.translateY * -1 < self.pageWrapHeight - self.windowHeight) {
+					self.changeHash($current.next());
+				} else if ($.inArray(event.which, downKeys) !== -1 && self.translateY < 0) {
+					self.changeHash($current.prev());
+				} else if (event.which === homeEndKeys[0]) {
+					self.changeHash(self.$section.first());
+				} else if (event.which === homeEndKeys[1]) {
+					self.changeHash(self.$section.last());
+				}
+			});
+
+			/**
+			*  Handles mousewheel events that allow site's navigation
+			*/
+			this.$window.on('mousewheel', function(event) {
+				var $current = $('.current');
+				if(event.deltaY < 0 && self.translateY * -1 < self.pageWrapHeight - self.windowHeight) {
+					self.changeHash($current.next());
+					self.headerNavMobileHide();
+				} else if (event.deltaY > 0 && self.translateY < 0){
+					self.changeHash($current.prev());
+					self.headerNavMobileHide();
+				}
+			});
+
+			/**
+			*  Prevents wheel button click default action in Chrome
+			*/
+			this.$window.on('click', function(event) { 
+				if( event.which == 2 ) {
+					event.preventDefault();
+				}
+			});			
+
+			/**
+			*  Handles every single anchor click event
+			*  of all navs
+			*/
+			this.$anchor.on('click', function(event) {
+				event.preventDefault();
+				self.changeHash(this);
+				self.headerNavMobileHide();
+			});
+
+			/** 
+			*  Adding popstate event listener to handle browser back button
+			*/  
+			this.$window.on("popstate", function(event) {
+				self.onHashChange();
+			});
+
+			/**
+			*  Prevents wheel button click default action in Chrome
+			*/
+			this.$menuBurger.on('click', function(event) { 
+				event.preventDefault();
+				//Jeżeli menu burger jest w mobile to rób toggle menu
+				if ($('body').width() < 768) {
+					if ( self.$headerNav.hasClass("isDown") ) {
+						self.$headerNav.animate({
+							width: "100%",
+							opacity: "1",
+						}, 200).show();                            
+					} else {
+						self.$headerNav.animate({
+							width:"0",
+							opacity: "0"
+						}, 200);
+					}
+					self.$headerNav.toggleClass("isDown");
+					return false;
+				} else {
+					self.changeHash(this);					
+				}
+			});
+		},
+
+		/**
+		*  Hide main header navigation
+		*/
+		headerNavMobileHide: function() {
+			if ($('body').width() >= 768) {
+				return false;
+			} else {
+				this.$headerNav.animate({
+							width:"0",
+							opacity: "0"
+						}, 200)
+				.toggleClass("isDown");
+			}
+		},
+
+		/**
+		*  Sets correct location href on document ready
+		*  and eliminate incorrect requests
+		*/
+		setHash: function() {
+			var hash = window.location.hash,
+				pagesObj = this.$navAnchor.map(function() {
+  					return $(this).attr("href");
+				}).get();
+			// Reset window position at start
+			window.scrollTo(0,0);
+			// Set the default hash in case the requested one doesn't
+			// exist
+			if (hash === pagesObj[0] || pagesObj.indexOf(hash) === -1) {
+				window.location.hash = this.defaultHash;
+			} else if (pagesObj.indexOf(hash) > -1) {
+				this.onHashChange();
+			}
+		},
+
+		/**
+		*  Assigns actual height values to variables
+		*/	
+		updateHeights: function() {	
+			this.setWindowHeight();
+			this.setSectionNavMargin();
+		},
+
+		/**
+		*  Sets a browser's window height value for each section
+		*/	
+		setWindowHeight: function() {
+			var self = this;			
+			this.windowHeight = this.$window.height();
+			this.$section.each(function(){				
+				var target = $(this);
+				target.height(self.windowHeight);
+			});
+			this.pageWrapHeight = this.$pageWrap.height();
+			return this.pageWrapHeight;
+		},
+
+		/**
+		*  Sets a proper CSS margin-top value of our menu on scrollwheel 
+		*/
+		setSectionNavMargin: function() {
+			this.sectionNavHeight = this.$sectionNav.height();
+			this.$sectionNav.css({'margin-top': '( -' + this.sectionNavHeight + ' / 2)'});
+		},
+
+		/**
+		*  Handles hash changing on user interface events
+		*/
+		changeHash: function(target) {
+			this.target = target.href || '#' + target.attr('data-anchor');		
+			var hash = this.target.substring(this.target.indexOf('#'));
+			this.addHistory(hash);
+			this.onHashChange();
+		},
+
+		/**
+		*  Invokes functions that handle the visual aspect of 
+		*  the hashchange event
+		*/
+		onHashChange: function() {
+			var hash = window.location.hash || this.defaultHash;
+			$('.current').removeClass('current');
+			$(hash).addClass('current');
+			this.setActiveNavAnchors(hash);	
+			this.animateToCurrentSection(hash);
+		},
+
+		/**
+		*  Handles the correct class toggling of all navigation 
+		*  anchors and buttons whenever the hashchange event occurs
+		*/
+		setActiveNavAnchors: function(hash) {
+			this.$navAnchor.parents('li').removeClass('active');
+			$('.nav a[href="' + hash + '"]').parents('li').addClass('active');
+			this.$sectionNavAnchor.children('span').removeClass('point-active');
+			$('.section-nav a[href="' + hash + '"]').children('span').addClass('point-active');
+			this.$body.removeClass().addClass((hash).replace('#',''));			
+		},
+
+		/**
+		*  Displays the requested page content whenever
+		*  the hashchange event occurs
+		*/
+		animateToCurrentSection: function(hash) {
+			var self = this;
+			this.hash = hash;
+			this.index = $(this.hash).index();
+			this.translateY = this.index * this.windowHeight * -1;			
+			clearTimeout($.data(this, 'scrollTimer'));
+			$.data(this, 'scrollTimer', setTimeout(function() {		
+				self.$pageWrap.css({transform: 'translateY(' + self.translateY + 'px)'});		
+			}, 250));
+		},
+
+		/**
+		*  Handles the browser history by adding correct entries
+		*  whenever the hashchange event occurs
+		*/
+		addHistory: function(url) {			
+			// Add History Entry using pushState
+			history.pushState(null, null, url);
 		}
-	});
+	};
 
 	/**
-	*  Handles the 
+	*  Instantiate new APP and kick off the application
 	*/
-	$('.section-nav a').click(function(event){
-		event.preventDefault();
-		var target = $(this);		
-		onNavAnchorClick(target);
-	});
+	$document.ready(function() {
+		var app = new APP();
+		app.start();
+	});	
 
-	/**
-	*  Handles the 
-	*/
-	$('.nav a').click(function(event){
-		event.preventDefault();
-		var target = $(this);
-		onNavAnchorClick(target);
-	});
-
-	$('#menu-burger').click(function(event){
-		event.preventDefault();
-		bigLogoFly();
-		var target = $(this);
-		clearTimeout($.data(this, 'scrollTimer'));	
-		$.data(this, 'scrollTimer', setTimeout(function() {
-			onNavAnchorClick(target);
-		}, 1000));
-	});
-
-
-	function drawHeaderCanvas() {
-/*	  var headerCanvas = document.getElementById('header-canvas');
-	  if (headerCanvas.getContext) {
-	    var ctx = headerCanvas.getContext('2d');
-	    headerCanvas.height = windowHeight;
-	   
-	    var triangle = new Path2D();
-	    triangle.moveTo(0, 300);
-	    triangle.lineTo(240, 0);
-	    triangle.lineTo(0, windowHeight);
-	    
-	    ctx.fillStyle = "#16A086";
-	    ctx.fill(triangle);
-	  }*/
-	}
-
-	/**
-	*  Sets a browser's window height value for each section
-	*/	
-	function setWindowHeight() {
-		$("section").each(function(){
-			var $this = $(this);
-			$this.height(windowHeight);
-		});
-	}
-
-	function setSectionNavMargin() {
-		sectionNavHeight = $('.section-nav').height();
-		$('.section-nav').css({"margin-top": "( -" + sectionNavHeight + " / 2)"});
-	}
-
-	/**
-	*  Assigns actual height values to variables
-	*/	
-	function updateHeights() {
-		windowHeight = $(window).height();
-		setWindowHeight();
-		pageWrapHeight = $(".page-wrap").height();
-		setSectionNavMargin();
-	}
-
-	function onHashChange() {
-		$('.nav a').parents('li').removeClass('active');
-		$('.nav a[href="' + window.location.hash + '"]').parents('li').addClass('active');
-		$('.section-nav a').children('span').removeClass('point-active');
-		$('.section-nav a[href="' + window.location.hash + '"]').children('span').addClass('point-active');
-		$('body').removeClass().addClass((window.location.hash).replace('#',''));
-	}
-
-	function resetHash() {
-		window.location.href = "#home";
-		history.pushState(null, null, window.location.pathname);
-	}
-
-	function onNavAnchorClick(target) {
-		var targetSectionAnchor = $(target).attr("href").replace('#','');
-		var index = $('#' + targetSectionAnchor).index();
-		translateY = index * windowHeight * -1;
-		$(".page-wrap").css({transform: 'translateY(' + translateY + 'px)'});
-		$('.current').removeClass('current');
-		$('#' + targetSectionAnchor).addClass('current');
-		history.pushState(null, null, '#' + targetSectionAnchor);
-		return onHashChange();		
-	}
-
-	function bigLogoFly() {
-		$('#big-logo').addClass('lightSpeedOut');
-	}
-
-});
+})(jQuery);
