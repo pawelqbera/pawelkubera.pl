@@ -16,6 +16,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-deploy": "^0.1.7",
     "grunt-eslint": "^16.0.0",
+    "grunt-express-server": "^0.5.1",
     "grunt-filerev": "^2.2.0",
     "grunt-mocha": "^0.4.12",
     "grunt-modernizr": "^0.6.0",
@@ -47,5 +48,13 @@
         "single"
       ]
     }
+  },
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "express": "^4.13.4",
+    "handlebars": "^4.0.5",
+    "jade": "^1.11.0",
+    "node-sass": "^3.4.2",
+    "nodemailer": "^2.1.0"
   }
 }

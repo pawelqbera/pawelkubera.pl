@@ -31,7 +31,7 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="./bower_components/normalize-css/normalize.css">    
+    <link rel="stylesheet" href="/bower_components/normalize-css/normalize.css">    
     <link rel="stylesheet" href="./styles/main.css">
     <link rel="stylesheet" href="./styles/animate-headline.css">
     <!-- endbuild -->
@@ -47,7 +47,7 @@
     <header>
 <!--       <canvas id="header-canvas" width="240px" height="743px"></canvas> -->
       <nav class="isDown">
-        <a class="logo" href="http://pawelkubera.pl"><img src="images/pawel-kubera-front-end-developer.png" alt="Pawel Kubera Front-end Developer" /></a>
+        <a class="logo" href="http://pawelkubera.pl"><img src="./images/pawel-kubera-front-end-developer.png" alt="Pawel Kubera Front-end Developer" /></a>
         <ul class="nav">
           <li class="active"><a class="anchor" href="#home">Home</a></li>
           <li><a class="anchor" href="#projects">Projects</a></li>
@@ -171,11 +171,11 @@
             </ul>              
           </div>
           <div class="row contact-form">
-            <form method="post" action="send.php">
-              <input type="text" name="name" placeholder="Name">
-              <input type="text" name="email" placeholder="Email">
-              <textarea type="text" name="message" placeholder="Message"></textarea>
-              <button type="submit" class="btn-send">$END</button>
+            <form action='/contact' name='contactus' id='contactus' method='post'>
+              <input type="text" name="name" placeholder="Name" id="name">
+              <input type="text" name="email" placeholder="Email" id="email">
+              <textarea type="text" name="message" placeholder="Message" id="message"></textarea>
+              <input type="submit" class="btn-send" value="$END">
             </form>
           </div>
           <footer>
@@ -209,8 +209,8 @@
     <!-- endbuild -->
     
     <!-- build:js scripts/main.js -->
-    <script src="scripts/main.js"></script>
-    <script src="scripts/animate-headline.js"></script>
+    <script src="./scripts/main.js"></script>
+    <script src="./scripts/animate-headline.js"></script>
     <!-- endbuild -->
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

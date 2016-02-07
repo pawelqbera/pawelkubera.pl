@@ -15,6 +15,7 @@ module.exports = function (grunt) {
 
   // Automatically load required grunt tasks
   require('jit-grunt')(grunt, {
+      express: 'grunt-express-server', // FNP    
       useminPrepare: 'grunt-usemin'
   });
 
@@ -30,8 +31,27 @@ module.exports = function (grunt) {
   grunt.initConfig({
 
     // Project settings
-    config: config,
-
+    config: config, 
+    express: {
+      options: {
+        port: 8000,
+      //  port: process.env.PORT || 7000  
+    // baseDir: ['../.tmp', config.app],
+        routes: {
+          '/bower_components': '../blabla/bower_components'
+        }         
+      },
+      dev: {
+        options: {
+          script: 'app/server.js'
+        }
+      },
+      dist: {
+        options: {
+          script: 'dist/server.js'
+        }
+      }
+    },
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       bower: {
@@ -72,7 +92,7 @@ module.exports = function (grunt) {
             '<%= config.app %>/images/{,*/}*',
             '.tmp/scripts/{,*/}*.js'
           ],
-          port: 9000,
+          port: 8000,
           server: {
             baseDir: ['.tmp', config.app],
             routes: {
@@ -83,7 +103,7 @@ module.exports = function (grunt) {
       },
       test: {
         options: {
-          port: 9001,
+          port: 8001,
           open: false,
           logLevel: 'silent',
           host: 'localhost',
@@ -344,7 +364,9 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             'images/{,*/}*.webp',
             '{,*/}*.html',
-            'styles/fonts/{,*/}*.*'
+            'styles/fonts/{,*/}*.*',
+            'server.js',
+            'secret.json'
           ]
         }, {
           expand: true,
@@ -398,7 +420,8 @@ module.exports = function (grunt) {
           username: '<%= secret.production.username %>',
           password: '<%= secret.production.password %>',
           local_path: './dist',
-          deploy_path: '/var/www/domains/pawelkubera.pl',
+          deploy_path: 'cd /var/www/domains/pawelkubera.pl/current && forever stop server.js',
+          after_deploy: 'cd /var/www/domains/pawelkubera.pl/current && npm install &&  NODE_ENV=production forever start server.js',
           releases_to_keep: '5',
           release_subdir: '/'
         }
@@ -410,7 +433,7 @@ module.exports = function (grunt) {
   grunt.registerTask('serve', 'start the server and preview your app', function (target) {
 
     if (target === 'dist') {
-      return grunt.task.run(['build', 'browserSync:dist']);
+      return grunt.task.run(['build','env:dist','express:dist', 'browserSync:dist']);
     }
 
     grunt.task.run([
@@ -418,6 +441,7 @@ module.exports = function (grunt) {
       'wiredep',
       'concurrent:server',
       'postcss',
+      'express:dev', // FNP
       'browserSync:livereload',
       'watch'
     ]);
