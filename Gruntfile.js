@@ -15,7 +15,7 @@ module.exports = function (grunt) {
 
   // Automatically load required grunt tasks
   require('jit-grunt')(grunt, {
-      express: 'grunt-express-server', // FNP    
+      express: 'grunt-express-server', // FNP
       useminPrepare: 'grunt-usemin'
   });
 
@@ -31,15 +31,15 @@ module.exports = function (grunt) {
   grunt.initConfig({
 
     // Project settings
-    config: config, 
+    config: config,
     express: {
       options: {
         port: 8000,
-      //  port: process.env.PORT || 7000  
+      //  port: process.env.PORT || 7000
     // baseDir: ['../.tmp', config.app],
         routes: {
           '/bower_components': '../blabla/bower_components'
-        }         
+        }
       },
       dev: {
         options: {
@@ -281,16 +281,16 @@ module.exports = function (grunt) {
     },
 
     // The following *-min tasks produce minified files in the dist folder
-    imagemin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= config.app %>/images',
-          src: '{,*/}*.{gif,jpeg,jpg,png}',
-          dest: '<%= config.dist %>/images'
-        }]
-      }
-    },
+    //imagemin: {
+    //  dist: {
+    //    files: [{
+    //      expand: true,
+    //      cwd: '<%= config.app %>/images',
+    //      src: '{,*/}*.{gif,jpeg,jpg,png}',
+    //      dest: '<%= config.dist %>/images'
+    //    }]
+    //  }
+    //},
 
     svgmin: {
       dist: {
@@ -407,7 +407,7 @@ module.exports = function (grunt) {
       dist: [
         'babel',
         'sass',
-        'imagemin',
+        //'imagemin',
         'svgmin'
       ]
     },
@@ -415,13 +415,14 @@ module.exports = function (grunt) {
     secret: grunt.file.readJSON('secret.json'),
     environments: {
       production: {
-        options: {        
+        options: {
           host: '<%= secret.production.host %>',
           username: '<%= secret.production.username %>',
           password: '<%= secret.production.password %>',
           local_path: './dist',
-          deploy_path: 'cd /var/www/domains/pawelkubera.pl/current && forever stop server.js',
-          after_deploy: 'cd /var/www/domains/pawelkubera.pl/current && npm install &&  NODE_ENV=production forever start server.js',
+          deploy_path: '/var/www/domains/pawelkubera.pl/current',
+          before_deploy: 'cd /var/www/domains/pawelkubera.pl/current && forever stop server.js',
+          after_deploy: 'cd /var/www/domains/pawelkubera.pl/current && npm install && NODE_ENV=production forever start server.js',
           releases_to_keep: '5',
           release_subdir: '/'
         }
@@ -433,7 +434,7 @@ module.exports = function (grunt) {
   grunt.registerTask('serve', 'start the server and preview your app', function (target) {
 
     if (target === 'dist') {
-      return grunt.task.run(['build','env:dist','express:dist', 'browserSync:dist']);
+      return grunt.task.run(['build', 'env:dist', 'express:dist', 'browserSync:dist']);
     }
 
     grunt.task.run([
